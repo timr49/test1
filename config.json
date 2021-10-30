@@ -1,0 +1,254 @@
+{
+  "wifi":
+  {
+    "ssid": "HOUSE",
+    "psk": "Chewpacca",
+    "hostname": "MyPub1"
+  },
+  "config":
+  {
+    "method": "file",
+    "path": "/config2.json"
+  },
+  "interfaces":
+  [
+    {
+      "type": "analog",
+      "pin": "A0",
+      "device":
+      {
+        "type": "analog",
+        "sensor": { "topic": "exterior/light", "denominator": 10, "precision": 1 }
+      }
+    },
+    {
+      "type": "digital",
+      "pin": "A0",
+      "device":
+      {
+        "type": "digital",
+        "sensor": { "topic": "interior/aircon" }
+      }
+    },
+    {
+      "type": "digital",
+      "pin": "D4",
+      "device":
+      {
+        "type": "analog",
+        "sensor": { "topic": "interior/airspeed" }
+      }
+    },
+    {
+      "type": "digital",
+      "pin": "D0",
+      "mode": "INPUT",
+      "device":
+        {
+          "type": "digital",
+          "active": "HIGH",
+          "debounceInterval": 0,
+          "sensor": { "topic": "door/open" }
+	      }
+    },
+    {
+      "type": "digital",
+      "pin": "D0",
+      "mode": "INPUT_PULLUP",
+      "device":
+        {
+          "type": "digital",
+          "active": "LOW",
+          "debounceInterval": 5,
+          "sensor": { "topic": "skylight/open" }
+	      }
+    },  
+    {
+      "type": "digital",
+      "pin": "D3",
+      "mode": "INPUT_PULLUP",
+      "devices":
+      [
+        {
+          "type": "digital",
+          "sensor": { "topic": "window/open" }
+        },
+        {
+          "type": "digital",
+          "sensor": { "topic": "backdoor/open" }
+        }
+      ]
+    },
+    {
+      "type": "dht",
+      "pin": "D6",
+      "device":
+	    {
+          "type": "DHT",
+          "variant": "DHT11",
+          "sensors":
+          [
+            { "topic": "interior/temperature", "low": 15, "high": 35 },
+            { "topic": "interior/humidity",    "low": 30, "high": 70 },
+            { "topic": "interior/summary",     "low": 30, "high": 70 }
+	        ]
+	    }
+    },
+    {
+      "type": "onewire",
+      "pin": "D7",
+      "devices":
+      [
+        {
+          "type": "DS18B20",
+          "address": "28E5494D0600006A",
+          "sensor": { "topic": "fridge/fridge/temperature", "low": 0, "high": 4, "precision": 1 }
+	      },
+        {
+          "type": "DS18B20",
+          "address": "28FF3D9F83150272",
+          "sensor": { "topic": "fridge/freezer/temperature", "low": -25, "high": -15, "precision": 2 }
+	      },
+	      {
+          "type": "DS18B20",
+          "address": "*",
+          "sensor": { "topic": "fridge/condensor/temperature", "precision": 3 }  
+	      }
+      ]
+    },
+    {
+      "type": "i2c",
+      "devices":
+      [
+        {
+          "type": "PCF8574",
+          "address": "0x40",
+          "sensor": { "topic": "which/what", "port": 3 }
+        },
+        {
+          "type": "PCF8591",
+          "address": "0x48",
+          "sensors":
+          [
+            { "topic": "fridge/dc/voltage", "port": 2, "low": 11, "high": 15 },
+            { "topic": "fridge/dc/current", "port": 3, "low": 0,  "high": 30 }
+          ]
+	      },
+        {
+          "type": "MMA8452Q",
+          "address": "0x1D",
+          "sensors":
+          [
+            { "topic": "accelerometer/x", "precision": 2 },
+            { "topic": "accelerometer/y", "precision": 2 },
+            { "topic": "accelerometer/z", "precision": 2 }
+          ]
+	      },
+        {
+          "type": "MAG3110",
+          "address": "0x0E",
+          "sensors":
+          [
+            { "topic": "magnetometer/x",                      "precision": 2 },
+            { "topic": "magnetometer/y",                      "precision": 2 },
+            { "topic": "magnetometer/z",                      "precision": 2 },
+            { "topic": "magnetometer/heading",     "port": 3, "precision": 2 },
+            { "topic": "magnetometer/temperature", "port": 4, "precision": 2 }
+          ]
+	      }
+      ]
+    },
+    {
+      "type": "serial",
+      "serialPort": 0,
+      "serialSpeed": 9600,
+      "device":
+      {
+         "type": "gps",
+         "variant": "GP-20U7",
+	       "sensors":
+          [
+            { "topic": "gps/latitude",                      "precision": 6 },
+            { "topic": "gps/longitude",                     "precision": 6 },
+            { "topic": "gps/altitude",  "denominator": 100, "precision": 2 },
+            { "topic": "gps/satellites",                    "precision": 0 },
+            { "topic": "gps/hdop",      "denominator": 100, "precision": 2 },
+            { "topic": "gps/age" },
+            { "topic": "gps/position" },
+            { "topic": "gps/date" },
+            { "topic": "gps/course",     "denominator": 100, "precision": 2 },
+            { "topic": "gps/speed",      "denominator": 100, "precision": 2 },
+            { "topic": "gps/summary" }
+          ]
+	    }
+    }
+  ],
+  "publishers":
+    [
+      {
+        "tag":      "MOBILE3 MQTT",
+        "type":	    "MQTT",
+        "priority": "medium",
+        "server":   "192.168.10.3",
+        "port":     1883
+      },
+      {
+        "type":     "IFTTT",
+        "priority": "high",
+        "method":   "http",
+        "server":   "maker.ifttt.com",
+        "port":     80,
+        "path":     "/trigger",
+        "user":     "event1",
+        "password": "bavuZzDL77w3PVJWxxSugo"
+      },
+      {
+        "type":     "console",
+        "priority": "low",
+        "port":     0
+      },
+      {
+        "type":     "pushover",
+        "priority": "high",
+        "method":   "https",
+        "certificate": "",
+        "server":   "api.pushover.net",
+        "port":     80,
+        "path":     "/1/messages.json",
+        "user":     "ug94Ee2tZhkJhNuyCPqbSmccyrBEZq",
+        "password": "az9bk8o6acd71ymanrnk84fu1563ae"
+      }
+    ],
+  "publications":
+  [
+    { "topic": "echo/FirstPublication" },
+    {
+      "topic": "system/+",
+      "priority": "Medium",
+      "period": 60
+    },
+    { "topic": "exterior/light" },
+    { "topic": "door/open" },
+    { "topic": "skylight/open" },
+    {
+      "topic": "interior/#",
+      "period": 5
+    },
+    {
+      "topic": "fridge/#"
+    },
+    { "topic": "accelerometer/x" },
+    { "topic": "accelerometer/y" },
+    { "topic": "accelerometer/z" },
+    { "topic": "magnetometer/x" },
+    { "topic": "magnetometer/y" },
+    { "topic": "magnetometer/z" },
+    { "topic": "magnetometer/h" },
+    { "topic": "magnetometer/t" },
+    {
+      "topic": "gps/summary",
+      "period":  60
+    },
+    { "topic": "echo/LastPublication" }
+  ]
+}
