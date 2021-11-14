@@ -208,6 +208,12 @@
         "port":     0
       },
       {
+        "type":     "console",
+        "priority": "medium",
+        "port":     1,
+        "speed":    9600
+      },
+      {
         "type":     "pushover",
         "priority": "high",
         "method":   "https",
@@ -225,14 +231,14 @@
     {
       "topic": "system/+",
       "priority": "Medium",
-      "routinePeriod": 60
+      "routine": 60
     },
     { "topic": "exterior/light" },
     { "topic": "door/open" },
     { "topic": "skylight/open" },
     {
       "topic": "interior/#",
-      "routinePeriod": 5
+      "routine": 5
     },
     {
       "topic": "fridge/#"
@@ -247,7 +253,7 @@
     { "topic": "magnetometer/t" },
     {
       "topic": "gps/summary",
-      "routinePeriod":  60
+      "routine":  60
     },
     { "topic": "echo/LastPublication" }
   ]
