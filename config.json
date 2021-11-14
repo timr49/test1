@@ -225,14 +225,14 @@
     {
       "topic": "system/+",
       "priority": "Medium",
-      "period": 60
+      "routinePeriod": 60
     },
     { "topic": "exterior/light" },
     { "topic": "door/open" },
     { "topic": "skylight/open" },
     {
       "topic": "interior/#",
-      "period": 5
+      "routinePeriod": 5
     },
     {
       "topic": "fridge/#"
@@ -247,7 +247,7 @@
     { "topic": "magnetometer/t" },
     {
       "topic": "gps/summary",
-      "period":  60
+      "routinePeriod":  60
     },
     { "topic": "echo/LastPublication" }
   ]
